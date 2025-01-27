@@ -1,5 +1,6 @@
+import { Environment } from "./environment";
 
-export const DevEnvironment={
+export const DevEnvironment: Environment={
     db_uri : `mongodb+srv://sajitmhr12:cN1vSwHKiZ50sQL7@swiggyclone.dngdn.mongodb.net/?retryWrites=true&w=majority&appName=SwiggyClone`
 
 }

@@ -1,6 +1,6 @@
 import * as express from "express";
 import * as mongoose from "mongoose"
-import { getEnvironmanetVariables } from "./environments/environment.js";
+import { getEnvironmanetVariables } from "./environments/environment";
 let app: express.Application=express();
 
 app.listen(3000,()=>{
