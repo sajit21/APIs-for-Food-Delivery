@@ -1,35 +1,26 @@
 
-import {Router} from express ;
-
+import  {Router} from "express" ;
+import { UserController } from "../controllers/Usercontroller";
+ 
 class UserRouter{
     public router:Router;
 
-    constructor(){
-        this.router=Router()
-      
+constructor()
+{
+   this.router=Router()
    this.getRoutes()
    this.postRoutes()
-
    this.putRoutes()
    this.patchRoutes()
-
-
    this.deleteRoutes()
 
 }
 
     getRoutes(){
-        this.router.get('/api/user',(req,res)=>{
-            const data =[{name: 'tech'}]
-            res.status(200).send(data)
-         })
+        this.router.get('/login',UserController.login)
+     
    
-         this.router.get('/api/user/test',(req,res,next)=>{
-            console.log("test")
-            next
-         },(req,res)=>{
-            res.send("test")
-         })
+         this.router.get('/test',UserController.test1,UserController.test2)
     }
     postRoutes(){}
     putRoutes(){}

@@ -27,20 +27,7 @@ mongoose.connect(getEnvironmanetVariables().db_uri)
 })
    }
 
-   setRoutes(){}
-   
-
-   UserRoutes(){
-
-      this.app.use('/api/user/',UserRoutes.Router())
-     
-
+   setRoutes(){
+      this.app.use('/api/user',UserRoutes)
+    }
    }
-
-
-
-
-
-
-
-}
