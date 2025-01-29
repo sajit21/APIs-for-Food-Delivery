@@ -1,3 +1,7 @@
+
+
+import * as mongoose from "mongoose"
+import User from "../model/UserModel"
 export class UserController{
 
 
@@ -7,12 +11,30 @@ export class UserController{
             // res.status(200).send(data)
             // const error=new Error('user email or password does not match')
             // next(error)
-         res.send(req.body)
-          }
+         // res.send(req.body)
+         const {email,password}=req.body;
+         const user= new User({
+            email,
+            password
+         })
+
+         user.save().then((user)=>{
+            res.send(user) //incase to handle the promise . then use if it is resolve
+
+
+         })
+         .catch(err=>{
+            next(err)
+         }
+         )
+      }
+
+
+
          static test1(req,res,next){
        
-console.log("test") 
-next();       
+          console.log("test") 
+          next();       
     // res.status(200).send(data)
          }
          
