@@ -1,7 +1,7 @@
 
 import  {Router} from "express" ;
 import { UserController } from "../controllers/Usercontroller";
- 
+ import { UserValidator } from "../validator/UserValidator";
 class UserRouter{
     public router:Router;
 
@@ -17,7 +17,7 @@ constructor()
 }
 
     getRoutes(){
-        this.router.post('/login',UserController.login)
+        this.router.post('/singnup',UserValidator.signup(),UserController.signup)
      
    
          this.router.get('/test',UserController.test1,UserController.test2)
