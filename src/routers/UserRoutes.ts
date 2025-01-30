@@ -17,7 +17,7 @@ constructor()
 }
 
     getRoutes(){
-        this.router.post('/singnup',UserValidator.signup(),UserController.signup)
+        this.router.post('/signup',UserValidator.signup(),UserController.signup)
      
    
          this.router.get('/test',UserController.test1,UserController.test2)

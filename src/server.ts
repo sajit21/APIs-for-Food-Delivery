@@ -13,7 +13,7 @@ export class Server{
       this.setConfig()
       this.setRoutes()
       this.errorhandler() 
-      this.handleErros() //call this function when error occur while url hit
+      this.handleErrors() //call this function when error occur while url hit
    }
 
    setConfig(){
@@ -48,7 +48,7 @@ mongoose.connect(getEnvironmanetVariables().db_uri)
       })
     }
 
-    handleErros(){
+    handleErrors(){
       this.app.use((error,req,res,next)=>
          {
          const errorStatus =req.errorStatus || 500 
