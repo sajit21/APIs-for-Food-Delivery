@@ -16,6 +16,25 @@ const userSchema= new mongoose.Schema({
         type:String,
         required:true
     },
+    type:{
+        type:String,
+        required:true
+    }
+    ,
+    status:{
+        type:String,
+        required:true
+    },
+    created_at:{
+        type:String,
+        required:true,
+        default: new Date()
+    },
+    updated_at:{
+        type:String,
+        required: true,
+        default: new Date()
+    }
    
 })
 
