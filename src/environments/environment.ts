@@ -5,7 +5,9 @@ import { DevEnvironment } from "./environment.dev";
 
 
 export interface Environment{
-    db_uri: string
+    db_uri: string,
+    jwt_secret_key:string
+
 }
 export function getEnvironmanetVariables(){
     if(process.env.NODE_ENV === 'production')

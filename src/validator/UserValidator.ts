@@ -1,7 +1,8 @@
 
 // import { Router } from "express";
+import { query } from "express-validator";
 import { body ,validationResult } from "express-validator";
-
+import User from '../model/UserModel'
 
 export class UserValidator{
  static signup()
@@ -32,4 +33,32 @@ export class UserValidator{
   
           ]
         }
+      
+
+        // static verifyUserForResendEmail(){
+        //   return [query('email','Email is required').isEmail()]
+        // }
+
+        static login() {
+          return [
+              query('email', 'Email is required').isEmail()
+              .custom((email, {req}) => {
+                  return User.findOne({
+                      email: email
+                  }).then(user => {
+                      if (user) {
+                          req.user = user;
+                          return true;
+                      } else {
+                          // throw new Error('No User Registered with such Email');
+                          throw('No User Registered with such Email');
+                      }
+                  }).catch(e => {
+                      throw new Error(e);
+                  })
+              }),
+              query('password', 'Password is required').isAlphanumeric()
+          ];
+      }
+  
 }

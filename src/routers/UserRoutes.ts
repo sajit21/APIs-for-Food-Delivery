@@ -18,7 +18,9 @@ constructor()
 }
 
     getRoutes(){
-     
+        // this.router.get('/send/verification/email',UserValidator.verifyUserForResendEmail(),GlobalMiddleWare.checkError,UserController.resendVerificationEmail)
+        this.router.get('/login',UserValidator.login(),GlobalMiddleWare.checkError,UserController.login)
+
    
         //  this.router.get('/test',UserController.test1,UserController.test2)
     }

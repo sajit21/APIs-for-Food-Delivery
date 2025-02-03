@@ -1,11 +1,16 @@
 
 
-import * as mongoose from "mongoose"
-import User from "../model/UserModel"
 // import { validationResult } from "express-validator"; // we 
-import { Utilis } from "../utilis/Utilis";
-import { truncate } from "fs";
+import { Utils } from "../utils/Utils";
+// import { NodeMailer } from "../utils/NodeMailer";
+import * as Jwt from "jsonwebtoken"
+import { getEnvironmanetVariables } from "../environments/environment";
+import User from "../model/UserModel"
+
+
 export class UserController{
+
+
 
 
      static async signup(req,res,next)
@@ -24,21 +29,44 @@ export class UserController{
          
          // res.send('User signed up successfully!'); //  Make sure response is sent
       // }
-     
+      
+
+      try{
+      const hash= await Utils.encryptPassword(password)
        const data={
          email,
-         verified_OTPDate:Date.now() + new Utilis().verified_OTPDate,
-         verified_OTPToken : Utilis.GenerateOTp(6),
-         password,
+         verified_OTPDate:Date.now() + new Utils().verified_OTPDate,
+         verified_OTPToken : Utils.GenerateOTp(6),
+         password: hash,
          name,
          type,
          status
        }
            
 
-       try{
+     
          let user= await new User(data).save()
-         res.send(user)
+         const payload={
+            user_id : user._id,
+            email : user.email,
+
+         }
+        const token= Jwt.sign(
+            payload,
+            getEnvironmanetVariables().jwt_secret_key,{
+            expiresIn: '15d'
+         })
+       
+     
+         // await NodeMailer.sendMail({
+         //    to: [user.email],
+         //    subject: 'email verification',
+         //    html: `<h1>your OTP is ${data.verified_OTPToken}</h1>`
+         // })
+         res.json({
+            token:token,
+            user:user
+         })
 
        }catch(e){
          next(e)
@@ -72,20 +100,44 @@ export class UserController{
             {
                new : true
             })
-               if(user)
-               {
-                  res.send(user)
-
-               }else{
-                  throw new Error('email verification token is expired')
-
-               }
+            if (!user) {
+               return next(new Error("email verification token is expired")); 
+            }
+            res.send(user);
+            
             
             }
             catch(e){
                next(e)
             }
-         }}
+         }
+      
+
+         static async login(req,res,next){ 
+            const user = req.user;
+            const password = req.query.password;
+            const encrypt_password = user.password;
+            const data={password,
+               encrypt_password :user.password
+            }
+         
+         try {
+            await Utils.comparePassword(data);
+            const payload = {
+                // user_id: user._id,
+                aud: user._id,
+                email: user.email
+            };
+            // const token = Jwt.jwtSign(payload);
+            // res.json({
+            //     token: token,
+            //     user: user
+            // });
+        } catch(e) {
+            next(e);
+        }
+    }
+   }
 
 
          // static test1(req,res,next){
@@ -103,6 +155,4 @@ export class UserController{
          // }
 
       
-         
-
 
